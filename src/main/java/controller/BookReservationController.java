@@ -31,15 +31,22 @@ public class BookReservationController implements Route {
     @Override
     public Object handle(Request request, Response response) throws Exception {
 
-        Customer customer = customerInterface.getCustomer(request.queryParams("name"));
-
+        Customer customer = customerInterface.getCustomer(request.cookie("name"));
         String id = request.queryParams("id");
 
-        List<Reservations> list = new ArrayList();
+        if (customer == null) {
+            throw new Exception("Customer id not found");
+        }
 
-        list.add(libraryInterface.makeBookReservation(customer, Integer.valueOf(id)));
+        if (id == null) {
+            throw new Exception("Book id not found");
+        }
 
-        if (!list.contains(libraryInterface.libraryInventory[Integer.valueOf(id)])) {
+        List<Reservations> reservations = new ArrayList();
+
+        reservations.add(libraryInterface.makeBookReservation(customer, Integer.valueOf(id)));
+
+        if (!reservations.contains(libraryInterface.libraryInventory[Integer.valueOf(id)])) {
 
             return "This book does not need to be reserved and can be borrowed right away";
         }

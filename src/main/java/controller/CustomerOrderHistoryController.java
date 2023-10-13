@@ -34,6 +34,6 @@ public class CustomerOrderHistoryController implements Route {
 
         Book[] books = libraryInterface.myOrderHistory(customer);
 
-        return renderer.render(books);
+        return renderer.render(books, customer.Name);
     }
 }

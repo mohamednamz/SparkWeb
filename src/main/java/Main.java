@@ -18,7 +18,6 @@ public class Main {
         //ArrayList<Integer> list = new ArrayList<>();
         //LinkedList<Integer>
         //Queue<Integer>
-        HashMap<>
 
     }
 
@@ -47,6 +46,7 @@ public class Main {
         //libraryInterface.borrowBook(customer,1,1);
 
         customerInterface.addCustomer("Namz");
+        customerInterface.addCustomer("Umar");
 
         BorrowBookController borrowBookController = new BorrowBookController(libraryInterface,customerInterface,customer,booksPageRenderer);
 
@@ -55,9 +55,6 @@ public class Main {
         CustomerBorrowedBooksController customerBorrowedBooksController = new CustomerBorrowedBooksController(libraryInterface,customerInterface,booksPageRenderer);
 
         CancelReservationController cancelReservationController = new CancelReservationController(libraryInterface,customerInterface);
-
-
-
 
         CustomerOrderHistoryController customerOrderHistoryController = new CustomerOrderHistoryController(libraryInterface, customerInterface,booksPageRenderer, customer);
 
@@ -71,16 +68,22 @@ public class Main {
 
         //get("/books", customerOrderHistoryController);
 
-        //get("/books",borrowBookController);
+        get("/books/borrow",borrowBookController);
 
-        //get("books", bookReservationController);
+        get("/books/reserve", bookReservationController);
 
-        //get("/books", customerBorrowedBooksController);
+        get("/books/customer", customerBorrowedBooksController);
 
-        //get("/books", cancelReservationController);
+        get("/books/cancel", cancelReservationController);
 
-        //get("/books",returnBookController);
+        get("/books/return",returnBookController);
 
-        get("/books",payOutstandingFinesController);
+        get("/books/fines",payOutstandingFinesController);
+
+        get("/books", libraryController);
+
+        get("/customers", new CustomerController(customerInterface));
+
+        get("/login", new LoginController(libraryController));
     }
 }

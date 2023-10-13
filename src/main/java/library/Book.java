@@ -59,5 +59,9 @@ public class Book {
         return "by " + author;
     }
 
+    public int getId() {
+        return bookId;
+    }
+
 
 }

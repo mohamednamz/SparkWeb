@@ -1,8 +1,7 @@
 package html;
 
 import library.Book;
-
-import java.util.List;
+import library.List;
 
 public class BooksPageRenderer {
     public static String HTML = "<html>\n" +
@@ -44,24 +43,44 @@ public class BooksPageRenderer {
             "        </div>\n" +
             "    </div>\n" +
             "<INSERT>" + // PLACE WHERE I WANT TO INSERT
+             "<div href=\"https://www.w3schools.com/\">Visit W3Schools.com!</div>\n" +
             "\n" +
             "\n" +
             "    </body>\n" +
             "</html>";
 
 
-    public String render(Book[] books) {
-        String CARD_HTML = "<ul>";
+    public String render(Book[] books, String customer) {
+        String CARD_HTML = "<div>";
 
         for (Book book : books) {
-            CARD_HTML += "<li>" + book.getInfo() + "</li>";
+            CARD_HTML += "<div>" + book.getInfo() + "- " + book.getId();
+            CARD_HTML+= "<a href=\"http://localhost/books/borrow?name=" + customer  + "&id=" + book.getId()  + "\">" + " Borrow book</a>";
+            CARD_HTML += "</div>";
         }
 
-        CARD_HTML += "</ul>";
+        CARD_HTML += "</div>";
 
         String renderedHTML = HTML.replace("<INSERT>", CARD_HTML);
         return renderedHTML;
     }
+
+    public String render(Book[] books) {
+        String CARD_HTML = "<div>";
+
+        for (Book book : books) {
+            CARD_HTML += "<div>" + book.getInfo() + "- " + book.getId();
+            CARD_HTML+= "<a href=\"http://localhost/books/borrow?id=" + book.getId()  + "\">" + " Borrow book</a>";
+            CARD_HTML += "</div>";
+        }
+
+        CARD_HTML += "</div>";
+
+        String renderedHTML = HTML.replace("<INSERT>", CARD_HTML);
+        return renderedHTML;
+    }
+
+
 
     public String bookRender(Book book) {
         String CARD_HTML = "<ul>";
@@ -76,11 +95,22 @@ public class BooksPageRenderer {
         return renderedHTML;
     }
 
-    public String renderList (List<Book> books) {
+    public String renderList(java.util.List<Book> books) {
+
+        List convertedlist = new List();
+
+        for (Book book:books) {
+            convertedlist.add(book);
+        }
+
+        return renderList(convertedlist);
+    }
+
+    public String renderList(List books) {
         String CARD_HTML = "<ul>";
 
-        for (Book book : books) {
-            CARD_HTML += "<li>" + book.getInfo() + "</li>";
+        for(int i=0; i<books.size(); i++){
+            CARD_HTML += "<li>" + books.get(i).getInfo() + "</li>";
         }
 
         CARD_HTML += "</ul>";

@@ -31,12 +31,15 @@ public class BorrowBookController implements Route {
     @Override
     public Object handle(Request request, Response response) throws Exception {
 
-        Customer customer = customerInterface.getCustomer(request.queryParams("name"));
+        // Throw error if not here
+        String customerName = request.cookie("name");
+
+        Customer customer = customerInterface.getCustomer(customerName);
 
         String id = request.queryParams("id");
 
         Customer customerBooks = libraryInterface.borrowBook(customer, Integer.valueOf(id), 1);
 
-        return booksPageRenderer.bookRender(customerBooks.customerOrderHistory.get(Integer.valueOf(id) - 1));
+        return booksPageRenderer.renderList(customerBooks.customerOrderHistory);
     }
 }
