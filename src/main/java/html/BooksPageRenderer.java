@@ -43,7 +43,7 @@ public class BooksPageRenderer {
             "            <span>Navigation thing</span>\n" +
             "        </div>\n" +
             "    </div>\n" +
-                "<INSERT>" + // PLACE WHERE I WANT TO INSERT
+            "<INSERT>" + // PLACE WHERE I WANT TO INSERT
             "\n" +
             "\n" +
             "    </body>\n" +
@@ -53,7 +53,33 @@ public class BooksPageRenderer {
     public String render(Book[] books) {
         String CARD_HTML = "<ul>";
 
-        for (Book book: books) {
+        for (Book book : books) {
+            CARD_HTML += "<li>" + book.getInfo() + "</li>";
+        }
+
+        CARD_HTML += "</ul>";
+
+        String renderedHTML = HTML.replace("<INSERT>", CARD_HTML);
+        return renderedHTML;
+    }
+
+    public String bookRender(Book book) {
+        String CARD_HTML = "<ul>";
+
+
+        CARD_HTML += "<li>" + book.getInfo() + "</li>";
+
+
+        CARD_HTML += "</ul>";
+
+        String renderedHTML = HTML.replace("<INSERT>", CARD_HTML);
+        return renderedHTML;
+    }
+
+    public String renderList (List<Book> books) {
+        String CARD_HTML = "<ul>";
+
+        for (Book book : books) {
             CARD_HTML += "<li>" + book.getInfo() + "</li>";
         }
 

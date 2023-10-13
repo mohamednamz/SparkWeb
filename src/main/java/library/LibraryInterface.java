@@ -207,7 +207,7 @@ public class LibraryInterface {
                             }
                         }
                     }
-                    return reservations;
+                     return reservations;
                 }
             }
         }
@@ -238,9 +238,9 @@ public class LibraryInterface {
         return customer.CustomerInventory;
     }
 
-    public Customer payOffOutstandingFines(Customer customer, int index) {
+    public Customer payOffOutstandingFines(Customer customer, int index, int customerPayment) {
 
-        int finePayment = customer.outstandingFines - index;
+        int finePayment = customer.outstandingFines - customerPayment;
 
         if (finePayment == 0) {
             customer.outstandingFines = 0;

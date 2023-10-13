@@ -55,4 +55,9 @@ public class Book {
         return "Title of the book :  " + title;
     }
 
+    public String getAuthor() {
+        return "by " + author;
+    }
+
+
 }
