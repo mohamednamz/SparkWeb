@@ -63,5 +63,13 @@ public class Book {
         return bookId;
     }
 
+    public boolean getIsUse() {
+        return inUse;
+    }
+
+    public int getBorrowerId() {
+        return borrowerId;
+    }
+
 
 }

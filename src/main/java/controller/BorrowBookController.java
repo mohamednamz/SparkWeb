@@ -1,10 +1,7 @@
 package controller;
 
 import html.BooksPageRenderer;
-import library.Book;
-import library.Customer;
-import library.CustomerInterface;
-import library.LibraryInterface;
+import library.*;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -16,15 +13,21 @@ public class BorrowBookController implements Route {
 
     private BooksPageRenderer booksPageRenderer;
 
+    LibraryController libraryController;
+
+    Reservations reservations;
+
     private Customer customer;
 
 
     public BorrowBookController(LibraryInterface libraryInterface,
-                                CustomerInterface customerInterface, Customer customer, BooksPageRenderer renderer) {
+                                CustomerInterface customerInterface, Customer customer, BooksPageRenderer renderer, LibraryController libraryController, Reservations reservations) {
         this.libraryInterface = libraryInterface;
         this.customerInterface = customerInterface;
         this.customer = customer;
         this.booksPageRenderer = renderer;
+        this.libraryController = libraryController;
+        this.reservations = reservations;
 
     }
 
@@ -39,6 +42,8 @@ public class BorrowBookController implements Route {
         String id = request.queryParams("id");
 
         Customer customerBooks = libraryInterface.borrowBook(customer, Integer.valueOf(id), 1);
+
+        reservations.reservations.add(libraryInterface.libraryInventory[Integer.valueOf(id) - 1]);
 
         return booksPageRenderer.renderList(customerBooks.customerOrderHistory);
     }

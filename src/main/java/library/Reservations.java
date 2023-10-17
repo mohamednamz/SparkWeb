@@ -1,7 +1,11 @@
 package library;
 
 public class Reservations {
-    List reservations = new List();
+   public List reservations = new List();
+
+   public Book[] getList() {
+       return reservations.books;
+   }
 
     Queue<Book> queue = new Queue<>();
 

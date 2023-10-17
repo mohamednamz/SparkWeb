@@ -19,37 +19,35 @@ public class BookReservationController implements Route {
 
     private Customer customer;
 
+    private Reservations reservations;
 
-    public BookReservationController(LibraryInterface libraryInterface, CustomerInterface customerInterface, BooksPageRenderer booksPageRenderer, Customer customer) {
+
+    public BookReservationController(LibraryInterface libraryInterface, CustomerInterface customerInterface, BooksPageRenderer booksPageRenderer, Customer customer, Reservations reservations) {
         this.libraryInterface = libraryInterface;
         this.customerInterface = customerInterface;
         this.booksPageRenderer = booksPageRenderer;
         this.customer = customer;
+        this.reservations = reservations;
     }
 
 
     @Override
     public Object handle(Request request, Response response) throws Exception {
 
-        Customer customer = customerInterface.getCustomer(request.cookie("name"));
+        //Customer customer = customerInterface.getCustomer(request.cookie("name"));
+
         String id = request.queryParams("id");
 
-        if (customer == null) {
-            throw new Exception("Customer id not found");
-        }
+        libraryInterface.makeBookReservation(customer, Integer.valueOf(id));
 
-        if (id == null) {
-            throw new Exception("Book id not found");
-        }
+        //List<Reservations> reservations = new ArrayList();
 
-        List<Reservations> reservations = new ArrayList();
-
-        reservations.add(libraryInterface.makeBookReservation(customer, Integer.valueOf(id)));
-
-        if (!reservations.contains(libraryInterface.libraryInventory[Integer.valueOf(id)])) {
+        if (!reservations.reservations.contains(libraryInterface.libraryInventory[Integer.valueOf(id) - 1])) {
 
             return "This book does not need to be reserved and can be borrowed right away";
         }
+
+        //customer.customerReservations.add(libraryInterface.libraryInventory[Integer.valueOf(id) - 1]);
 
         return libraryInterface.libraryInventory[Integer.valueOf(id) - 1].getInfo() + " by " + libraryInterface.libraryInventory[Integer.valueOf(id) - 1].getAuthor() + " has been reserved";
 

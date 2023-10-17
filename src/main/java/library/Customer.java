@@ -1,6 +1,7 @@
 package library;
 
 
+import java.util.ArrayList;
 
 public class Customer {
     public String Name;
@@ -10,6 +11,8 @@ public class Customer {
     public int outstandingFines;
     public boolean Banned;
     public int userId;
+
+    public List customerReservations = new List();
 
     public void fine( int index) {
 

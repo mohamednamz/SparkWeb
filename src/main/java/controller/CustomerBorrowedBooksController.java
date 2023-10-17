@@ -28,7 +28,32 @@ public class CustomerBorrowedBooksController implements Route {
 
     @Override
     public Object handle(Request request, Response response) throws Exception {
-        Customer customer = customerInterface.getCustomer(request.queryParams("name"));
+
+        String customerName = request.cookie("name");
+
+
+        Customer customer = customerInterface.getCustomer(customerName);
+
+
         return booksPageRenderer.renderList(Arrays.asList(customer.CustomerInventory.toArray()));
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

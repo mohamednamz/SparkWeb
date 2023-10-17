@@ -1,5 +1,7 @@
 package library;
 
+import java.util.ArrayList;
+
 public class LibraryInterface {
 
     Reservations reservations = new Reservations();
@@ -132,6 +134,25 @@ public class LibraryInterface {
         return reservations;
     }
 
+    public java.util.List<Book> getReservations(Customer customer) {
+
+        java.util.List<Book> reservation = new ArrayList<>();
+
+
+        for (int i = 0; i < reservations.reservations.books.length; i++) {
+            if (reservations.reservations.books[i].listOfIds.get(i) != null) {
+                if (customer.userId == reservations.reservations.books[i].listOfIds.get(i)) {
+
+                    reservation.add(reservations.reservations.books[i]);
+
+
+                }
+            }
+        }
+        return reservation;
+    }
+
+
     public Reservations makeBookReservationQueue(Customer customer, int bookIdentificationNumber) {
 
         for (int i = 0; i < libraryInventory.length; i++) {
@@ -207,7 +228,7 @@ public class LibraryInterface {
                             }
                         }
                     }
-                     return reservations;
+                    return reservations;
                 }
             }
         }

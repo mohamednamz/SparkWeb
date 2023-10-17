@@ -7,14 +7,18 @@ import spark.Route;
 public class LoginController implements Route {
     private LibraryController libraryController;
 
-    public LoginController(LibraryController libraryController) {
+    private HomePageController homePageController;
+
+    public LoginController(LibraryController libraryController, HomePageController homePageController) {
         this.libraryController = libraryController;
+        this.homePageController = homePageController;
     }
 
     @Override
     public Object handle(Request request, Response response) throws Exception {
 
         response.cookie("name", request.queryParams("name"));
-        return libraryController.handle(request, response);
+        return homePageController.handle(request,response);
+
     }
 }

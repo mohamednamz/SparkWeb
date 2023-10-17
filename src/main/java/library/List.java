@@ -2,7 +2,11 @@ package library;
 
 public class List {
     Book[] books = new Book[1];
+
+    Reservations[] reservations = new Reservations[1];
     int index = 0;
+
+    int indexRes = 0;
 
 
     public void add(Book element) {
@@ -12,6 +16,16 @@ public class List {
         books[index] = element;
         index++;
     }
+
+    public void add(Reservations element) {
+        if (index >= books.length) {
+            grow();
+        }
+        reservations[indexRes] = element;
+        indexRes++;
+    }
+
+
 
     private void grow() {
         Book[] newArr = new Book[books.length * 2];
@@ -142,4 +156,17 @@ public class List {
         System.out.print("]");
         System.out.println();
     }
+
+    public boolean contains(Book book) {
+
+        for( int i = 0 ; i < books.length; i++) {
+            if (books[i].getId() == book.getId()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
 }

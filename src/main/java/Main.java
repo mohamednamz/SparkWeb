@@ -35,22 +35,28 @@ public class Main {
 
         AddCustomerController addCustomerController = new AddCustomerController(customerInterface);
 
+        ArrayOfRoutes arrayOfRoutes = new ArrayOfRoutes();
+
         Customer customer = new Customer();
         customer.Name = "Namz";
         customer.userId = 5;
         customer.customerOrderHistory = new List();
 
-        //customerInterface.getCustomer(customer.Name).customerOrderHistory.add(libraryInterface.availableBooks()[1]);
+        Customer customer2 = new Customer();
+        customer2.Name = "Umar";
+        customer2.userId = 4;
+        customer2.customerOrderHistory = new List();
+
+        Reservations reservations = new Reservations();
 
 
-        //libraryInterface.borrowBook(customer,1,1);
 
         customerInterface.addCustomer("Namz");
         customerInterface.addCustomer("Umar");
 
-        BorrowBookController borrowBookController = new BorrowBookController(libraryInterface,customerInterface,customer,booksPageRenderer);
+        BookReservationController bookReservationController = new BookReservationController(libraryInterface,customerInterface,booksPageRenderer,customer, reservations);
 
-        BookReservationController bookReservationController = new BookReservationController(libraryInterface,customerInterface,booksPageRenderer,customer);
+        BorrowBookController borrowBookController = new BorrowBookController(libraryInterface,customerInterface,customer,booksPageRenderer,libraryController, reservations);
 
         CustomerBorrowedBooksController customerBorrowedBooksController = new CustomerBorrowedBooksController(libraryInterface,customerInterface,booksPageRenderer);
 
@@ -62,11 +68,17 @@ public class Main {
 
         PayOutstandingFinesController payOutstandingFinesController = new PayOutstandingFinesController(libraryInterface,customerInterface);
 
+        HomePageController homePageController = new HomePageController(libraryController,booksPageRenderer,customerInterface, arrayOfRoutes);
+
+        YourReservationsController yourReservationsController = new YourReservationsController(libraryInterface,customerInterface,reservations,booksPageRenderer);
+
         //get("/books", libraryController);
 
         //get("/books", addCustomerController);
 
         //get("/books", customerOrderHistoryController);
+
+        get("/books/myReservations",yourReservationsController);
 
         get("/books/borrow",borrowBookController);
 
@@ -80,10 +92,16 @@ public class Main {
 
         get("/books/fines",payOutstandingFinesController);
 
-        get("/books", libraryController);
+        get("/books/library", libraryController);
 
         get("/customers", new CustomerController(customerInterface));
 
-        get("/login", new LoginController(libraryController));
+        get("/login", new LoginController(libraryController, homePageController));
+
+        get("/books/homepage",new HomePageController(libraryController,booksPageRenderer,customerInterface, arrayOfRoutes));
+
+        get("/books/borrowed",customerBorrowedBooksController);
+
+        get("/books/availableReservations", new GetReservationsController(libraryInterface, reservations,customerInterface,booksPageRenderer));
     }
 }

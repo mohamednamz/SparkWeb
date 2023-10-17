@@ -33,7 +33,9 @@ public class CancelReservationController implements Route {
         int id = Integer.valueOf(request.queryParams("id"));
         int date = Integer.valueOf(request.queryParams("date"));
 
-        libraryInterface.borrowBook(customer,id,date);
+
+
+
 
         List<Reservations> list = new ArrayList();
 
