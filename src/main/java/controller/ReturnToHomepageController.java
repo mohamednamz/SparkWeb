@@ -1,5 +1,6 @@
 package controller;
 
+import html.BooksPageRenderer;
 import library.Customer;
 import library.CustomerInterface;
 import library.LibraryInterface;
@@ -7,16 +8,23 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
-public class ReturnBookController implements Route {
+public class ReturnToHomepageController implements Route {
 
     LibraryInterface libraryInterface;
+
     CustomerInterface customerInterface;
 
-    public ReturnBookController(LibraryInterface libraryInterface, CustomerInterface customerInterface) {
+    BooksPageRenderer booksPageRenderer;
+
+    ArrayOfRoutes arrayOfRoutes;
+
+    public ReturnToHomepageController(LibraryInterface libraryInterface, CustomerInterface customerInterface, BooksPageRenderer booksPageRenderer, ArrayOfRoutes arrayOfRoutes) {
         this.libraryInterface = libraryInterface;
         this.customerInterface = customerInterface;
-    }
+        this.booksPageRenderer = booksPageRenderer;
+        this.arrayOfRoutes = arrayOfRoutes;
 
+    }
 
     @Override
     public Object handle(Request request, Response response) throws Exception {
@@ -25,14 +33,7 @@ public class ReturnBookController implements Route {
 
         Customer customer = customerInterface.getCustomer(customerName);
 
-        int date = 1;
+        return booksPageRenderer.render(customer.Name, arrayOfRoutes);
 
-        int bookId = Integer.valueOf(request.queryParams("bookId"));
-
-        libraryInterface.borrowBook(customer,bookId,date);
-
-        libraryInterface.returnBook(customer,date,bookId);
-
-        return libraryInterface.libraryInventory[bookId - 1].getInfo() + " by " + libraryInterface.libraryInventory[bookId - 1].getAuthor() + " has been returned";
     }
 }

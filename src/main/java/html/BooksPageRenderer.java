@@ -63,6 +63,10 @@ public class BooksPageRenderer {
             CARD_HTML += "</div>";
         }
 
+        CARD_HTML += "<div>";
+        CARD_HTML += "<a href=\"http://localhost/returnToHomepage\">" + " Homepage </a>";
+        CARD_HTML += "</div>";
+
         CARD_HTML += "</div>";
 
         String renderedHTML = HTML.replace("<INSERT>", CARD_HTML);
@@ -103,6 +107,10 @@ public class BooksPageRenderer {
             CARD_HTML += "</div>";
         }
 
+        CARD_HTML += "<div>";
+        CARD_HTML += "<a href=\"http://localhost/returnToHomepage\">" + " Homepage </a>";
+        CARD_HTML += "</div>";
+
         CARD_HTML += "</div>";
 
         String renderedHTML = HTML.replace("<INSERT>", CARD_HTML);
@@ -118,6 +126,10 @@ public class BooksPageRenderer {
             CARD_HTML += "</div>";
         }
 
+        CARD_HTML += "<div>";
+        CARD_HTML += "<a href=\"http://localhost/returnToHomepage\">" + " Homepage </a>";
+        CARD_HTML += "</div>";
+
         CARD_HTML += "</div>";
 
         String renderedHTML = HTML.replace("<INSERT>", CARD_HTML);
@@ -125,13 +137,15 @@ public class BooksPageRenderer {
     }
 
 
-
-
     public String bookRender(Book book) {
         String CARD_HTML = "<ul>";
 
 
         CARD_HTML += "<li>" + book.getInfo() + "</li>";
+
+        CARD_HTML += "<div>";
+        CARD_HTML += "<a href=\"http://localhost/returnToHomepage\">" + " Homepage </a>";
+        CARD_HTML += "</div>";
 
 
         CARD_HTML += "</ul>";
@@ -161,7 +175,13 @@ public class BooksPageRenderer {
 
         CARD_HTML += "</ul>";
 
+        CARD_HTML += "<div>";
+        CARD_HTML += "<a href=\"http://localhost/returnToHomepage\">" + " Homepage </a>";
+        CARD_HTML += "</div>";
+
         String renderedHTML = HTML.replace("<INSERT>", CARD_HTML);
         return renderedHTML;
     }
+
+
 }

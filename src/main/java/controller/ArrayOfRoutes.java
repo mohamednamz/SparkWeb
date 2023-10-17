@@ -2,7 +2,7 @@ package controller;
 
 public class ArrayOfRoutes {
 
-    String[] routes = {"/library","/cancel","return","/fines","/login", "/borrowed", "/availableReservations", "/myReservations"};
+    String[] routes = {"/library","/cancel","/return","/fines","/login", "/borrowed", "/availableReservations", "/myReservations"};
 
     String [] routeNames = {"book selection", "cancel a reservation", "return a book", "pay off a fine", "back to login page", "your books", "reservations list", "your reservations"};
 

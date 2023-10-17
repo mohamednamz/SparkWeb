@@ -21,6 +21,8 @@ public class LibraryController implements Route {
     @Override
     public Object handle(Request request, Response response) throws Exception {
 
+        //request.cookie("name");
+
         Book[] books = libraryInterface.availableBooks();
         request.queryParams("id");
         return booksPageRenderer.render(books);

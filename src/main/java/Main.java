@@ -103,5 +103,9 @@ public class Main {
         get("/books/borrowed",customerBorrowedBooksController);
 
         get("/books/availableReservations", new GetReservationsController(libraryInterface, reservations,customerInterface,booksPageRenderer));
+
+        get("/returnToHomepage", new ReturnToHomepageController(libraryInterface,customerInterface,booksPageRenderer,arrayOfRoutes));
+
+
     }
 }
