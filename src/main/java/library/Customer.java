@@ -14,10 +14,9 @@ public class Customer {
 
     public List customerReservations = new List();
 
-    public void fine( int index) {
+    public void fine(int fine) {
 
-        outstandingFines = CustomerInventory.books[index].dateReturned -
-                CustomerInventory.books[index].dateBorrowed;
+        outstandingFines = outstandingFines + fine;
 
         System.out.println("Your outstanding fines amount to: £" + outstandingFines);
     }

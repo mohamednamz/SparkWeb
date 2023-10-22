@@ -16,9 +16,6 @@ public class CancelReservationController implements Route {
     private LibraryInterface libraryInterface;
     private CustomerInterface customerInterface;
 
-    private Reservations reservations;
-
-
     public CancelReservationController(LibraryInterface libraryInterface,
                                        CustomerInterface customerInterface) {
         this.customerInterface = customerInterface;
@@ -28,21 +25,42 @@ public class CancelReservationController implements Route {
     @Override
     public Object handle(Request request, Response response) throws Exception {
 
-        Customer customer = customerInterface.getCustomer(request.queryParams("name"));
+        String customerName = request.cookie("name");
 
-        int id = Integer.valueOf(request.queryParams("id"));
-        int date = Integer.valueOf(request.queryParams("date"));
+        String bookId = request.queryParams("id");
 
+        Customer customer = customerInterface.getCustomer(customerName);
 
+        int id = Integer.valueOf(bookId);
+        int date = 1;
 
-
-
-        List<Reservations> list = new ArrayList();
-
-        list.add(libraryInterface.makeBookReservation(customer, id));
+//        List<Reservations> list = new ArrayList();
+//
+//        list.add(libraryInterface.makeBookReservation(customer, id));
 
         libraryInterface.cancelReservation(customer,id,date);
 
         return "your reservation for: " + libraryInterface.libraryInventory[id - 1].getInfo() + " by " + libraryInterface.libraryInventory[id - 1].getAuthor() + " has been cancelled";
     }
+
+//    public Object handle(Request request, Response response) throws Exception {
+//
+//        String customerName = request.cookie("name");
+//
+//        String bookId = request.queryParams("id");
+//
+//        Customer customer = customerInterface.getCustomer(customerName);
+//
+//        int date = 1;
+//
+//        int id = Integer.valueOf(bookId);
+//
+//        libraryInterface.returnBook(customer,date,id);
+//
+//        return libraryInterface.libraryInventory[id - 1].getInfo() + " by " + libraryInterface.libraryInventory[id - 1].getAuthor() + " has been returned";
+//    }
+
+
+
+
 }

@@ -6,6 +6,10 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class BorrowBookController implements Route {
 
     private LibraryInterface libraryInterface;
@@ -39,12 +43,36 @@ public class BorrowBookController implements Route {
 
         Customer customer = customerInterface.getCustomer(customerName);
 
+        List<Book> customerOrders = Arrays.asList(customer.CustomerInventory.toArray());
+
         String id = request.queryParams("id");
+
+        for (int i = 0; i < customerOrders.size(); i++) {
+            if (customerOrders.get(i) != null) {
+                if (customerOrders.get(i).getId() == Integer.valueOf(id)) {
+                    return "You have already borrowed this book";
+                }
+            }
+        }
+
+        boolean isInUse = libraryInterface.libraryInventory[Integer.valueOf(id) - 1].getIsUse();
+
+        if (isInUse) {
+            return "this book is already being borrowed";
+        }
+
+        List<Integer> IDs = new ArrayList<>();
 
         Customer customerBooks = libraryInterface.borrowBook(customer, Integer.valueOf(id), 1);
 
+        for (int i = 0; i < customer.CustomerInventory.size(); i++) {
+            IDs.add(customer.CustomerInventory.get(i).getId());
+        }
+
         reservations.reservations.add(libraryInterface.libraryInventory[Integer.valueOf(id) - 1]);
 
-        return booksPageRenderer.renderList(customerBooks.customerOrderHistory);
+        response.cookie("id",request.queryParams("id"));
+
+        return booksPageRenderer.renderList(customerBooks.CustomerInventory, IDs);
     }
 }

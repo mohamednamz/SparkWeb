@@ -29,7 +29,7 @@ public class ReturnToHomepageController implements Route {
     @Override
     public Object handle(Request request, Response response) throws Exception {
 
-        String customerName = request.cookie("name");
+         String customerName = request.cookie("name");
 
         Customer customer = customerInterface.getCustomer(customerName);
 

@@ -32,7 +32,7 @@ public class YourBooksController implements Route {
 
         String customerName = request.cookie("name");
 
-        Customer customer = customerInterface.getCustomer("name");
+        Customer customer = customerInterface.getCustomer(customerName);
 
         List<Book> customerBooks = new ArrayList<>();
 

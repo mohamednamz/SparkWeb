@@ -13,6 +13,8 @@ public class Book {
     int bookId;
     int quantity;
 
+    int reservedId;
+
     //TODO CUT OFF
 
     int borrowerId;
@@ -69,6 +71,10 @@ public class Book {
 
     public int getBorrowerId() {
         return borrowerId;
+    }
+
+    public int getReservedId() {
+        return reservedId;
     }
 
 

@@ -51,13 +51,13 @@ public class GetReservationsController implements Route {
         }
 
         for (int i = 0; i < listOfReservations.size(); i++) {
-            if (listOfReservations.get(i).getBorrowerId() != customer.userId) {
+            if (listOfReservations.get(i).getBorrowerId() != customer.userId && listOfReservations.get(i).getReservedId() == 0) {
                 canReserve.add(listOfReservations.get(i));
             }
         }
 
         if (canReserve.isEmpty()) {
-            return "You already own or are able to borrow all books in the library";
+            return "There are no books available to reserve";
         }
 
         //request.queryParams("id");

@@ -13,6 +13,8 @@ public class List {
         if (index >= books.length) {
             grow();
         }
+
+
         books[index] = element;
         index++;
     }
@@ -105,7 +107,11 @@ public class List {
             return false;
         }
         books[index] = null;
-        shiftList(index);
+
+        if (this.index != 1) {
+            shiftList(index);
+        }
+        this.index--;
         print();
         return true;
     }

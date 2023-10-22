@@ -54,7 +54,7 @@ public class Main {
         customerInterface.addCustomer("Namz");
         customerInterface.addCustomer("Umar");
 
-        BookReservationController bookReservationController = new BookReservationController(libraryInterface,customerInterface,booksPageRenderer,customer, reservations);
+        BookReservationController bookReservationController = new BookReservationController(libraryInterface,customerInterface,booksPageRenderer, reservations);
 
         BorrowBookController borrowBookController = new BorrowBookController(libraryInterface,customerInterface,customer,booksPageRenderer,libraryController, reservations);
 
@@ -71,6 +71,8 @@ public class Main {
         HomePageController homePageController = new HomePageController(libraryController,booksPageRenderer,customerInterface, arrayOfRoutes);
 
         YourReservationsController yourReservationsController = new YourReservationsController(libraryInterface,customerInterface,reservations,booksPageRenderer);
+
+        CustomerController customerController = new CustomerController(customerInterface);
 
         //get("/books", libraryController);
 
@@ -105,6 +107,12 @@ public class Main {
         get("/books/availableReservations", new GetReservationsController(libraryInterface, reservations,customerInterface,booksPageRenderer));
 
         get("/returnToHomepage", new ReturnToHomepageController(libraryInterface,customerInterface,booksPageRenderer,arrayOfRoutes));
+
+        get("/books/logout", new LogOutController(libraryInterface,customerInterface,booksPageRenderer,customerController));
+
+        get("/books/cancelReservation", new CancelReservationController(libraryInterface,customerInterface));
+
+        get("/books/yourFines", new YourFinesController(libraryInterface,customerInterface,booksPageRenderer));
 
 
     }

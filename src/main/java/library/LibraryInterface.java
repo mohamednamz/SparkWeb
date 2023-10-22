@@ -87,12 +87,12 @@ public class LibraryInterface {
                 }
                 if (bookIdentificationNumber == libraryInventory[i].bookId && !libraryInventory[i].inUse
                         && libraryInventory[i].quantity > 0) {
-                    customer.CustomerInventory.add(libraryInventory[i]);
                     libraryInventory[i].inUse = true;
                     libraryInventory[i].quantity--;
                     libraryInventory[i].dateBorrowed = todaysDate;
                     libraryInventory[i].printReceipt();
                     libraryInventory[i].borrowerId = customer.userId;
+                    customer.CustomerInventory.add(libraryInventory[i]);
                     customer.customerOrderHistory.add(libraryInventory[i]);
                     if (libraryInventory[i].reserved) {
                         if (reservations.reservations.books[0].listOfIds == null) {
@@ -121,10 +121,11 @@ public class LibraryInterface {
                 libraryInventory[i].reserved = true;
 
                 for (int j = 0; j < reservations.reservations.books.length; j++) {
-                    if (reservations.reservations.books[j].bookId == bookIdentificationNumber) {
+                    if (reservations.reservations.get(j).bookId == bookIdentificationNumber) {
                         reservations.reservations.books[j].listOfIds.add(bookIdentificationNumber);
 //TODO fix listofids list, only takes reserve ids not id currently in use... i think this is fixed.
-                        reservations.reservations.books[j].listOfIds.add(customer.userId);
+                        reservations.reservations.books[j].reservedId = customer.userId;
+                        //reservations.reservations.books[j].listOfIds.add(customer.userId);
                         System.out.println(libraryInventory[i].title + " by " + libraryInventory[i].author + " has been reserved");
                         return reservations;
                     }
@@ -140,18 +141,15 @@ public class LibraryInterface {
 
 
         for (int i = 0; i < reservations.reservations.books.length; i++) {
-            if (reservations.reservations.books[i].listOfIds.get(i) != null) {
-                if (customer.userId == reservations.reservations.books[i].listOfIds.get(i)) {
-
-                    reservation.add(reservations.reservations.books[i]);
-
+            if (reservations.reservations.get(i) != null) {
+                if (customer.userId == reservations.reservations.get(i).reservedId) {
+                    reservation.add(reservations.reservations.get(i));
 
                 }
             }
         }
         return reservation;
     }
-
 
     public Reservations makeBookReservationQueue(Customer customer, int bookIdentificationNumber) {
 
@@ -213,19 +211,21 @@ public class LibraryInterface {
     public Reservations cancelReservation(Customer customer, int bookIdentificationNumber, int cancellationDate) {
 
         for (int i = 0; i < reservations.reservations.books.length; i++) {
-            if (reservations.reservations.books[i].listOfIds.get(i) != null) {
-                if (customer.userId == reservations.reservations.books[i].listOfIds.get(i) &&
+            if (reservations.reservations.books[i] != null) {
+                if (customer.userId == reservations.reservations.books[i].reservedId &&
                         bookIdentificationNumber == reservations.reservations.books[i].bookId) {
 
-                    reservations.reservations.books[i].listOfIds.remove(i);
+                    //reservations.reservations.books[i].listOfIds.remove(i);
+
 
                     //TODO if there is a que i need to remove the reservation and replace with next person in list.
-                    for (int j = 0; j < reservations.reservations.books.length; j++) {
-                        if (reservations.reservations.books[j].listOfIds == null) {
-                            if (libraryInventory[j].bookId == bookIdentificationNumber) {
-                                libraryInventory[j].reserved = false;
-                                return reservations;
-                            }
+                    for (int j = 0; j < libraryInventory.length; j++) {
+                        if (libraryInventory[j].bookId == bookIdentificationNumber) {
+                            libraryInventory[j].reserved = false;
+                            //reservations.reservations.books[i].listOfIds.remove(i);
+                            reservations.reservations.books[i].reservedId = 0;
+                            reservations.reservations.remove(i);
+                            return reservations;
                         }
                     }
                     return reservations;
@@ -240,32 +240,37 @@ public class LibraryInterface {
         for (int i = 0; i < customer.CustomerInventory.books.length; i++) {
             if (bookIdentificationNumber == customer.CustomerInventory.books[i].bookId) {
                 if (returnDate - customer.CustomerInventory.books[i].dateBorrowed > 14) {
-                    customer.CustomerInventory.books[i].dateReturned = returnDate;
-                    customer.fine(i);
-                } else {
-                    customer.CustomerInventory.FastRemove(i);
-                    libraryInventory[i].inUse = false;
-                    libraryInventory[i].quantity++;
+                    //customer.CustomerInventory.books[i].dateReturned = returnDate;
+                    customer.fine(returnDate - customer.CustomerInventory.books[i].dateBorrowed);
 
-                    //TODO figure this out (although don't think i need this)
+                } //else {
+                customer.CustomerInventory.remove(i);
+
+                for (int j = 0; j < libraryInventory.length; j++) {
+                    if (bookIdentificationNumber == libraryInventory[j].bookId) {
+                        libraryInventory[j].inUse = false;
+                        libraryInventory[j].quantity++;
+                    }
+                }
+                //TODO figure this out (although don't think i need this)
 //                    if (libraryInventory[i].bookId == reservations.reservations.books[i].bookId &&
 //                            reservations.reservations.books[i].listOfIds.get(0) != customer.userId) {
 //                        borrowBook(customer, bookIdentificationNumber, returnDate);
 //                    }
-                    return customer.CustomerInventory;
-                }
+                return customer.CustomerInventory;
             }
+            //}
         }
         return customer.CustomerInventory;
     }
 
-    public Customer payOffOutstandingFines(Customer customer, int index, int customerPayment) {
+    public Customer payOffOutstandingFines(Customer customer, int customerPayment) {
 
         int finePayment = customer.outstandingFines - customerPayment;
 
         if (finePayment == 0) {
             customer.outstandingFines = 0;
-            libraryInventory[index].quantity++;
+            //libraryInventory[index].quantity++;
             System.out.println("you have paid off all your fines");
         } else {
             customer.outstandingFines = finePayment;

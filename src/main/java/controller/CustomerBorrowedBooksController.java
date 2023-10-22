@@ -9,6 +9,7 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -31,11 +32,23 @@ public class CustomerBorrowedBooksController implements Route {
 
         String customerName = request.cookie("name");
 
+        //String id = request.queryParams("id");
 
         Customer customer = customerInterface.getCustomer(customerName);
 
+        List<Integer> IDs = new ArrayList<>();
 
-        return booksPageRenderer.renderList(Arrays.asList(customer.CustomerInventory.toArray()));
+        for (int i = 0; i < customer.CustomerInventory.size(); i++) {
+            IDs.add(customer.CustomerInventory.get(i).getId());
+        }
+
+        if (IDs.isEmpty()) {
+            return "You have not borrowed any books";
+        }
+
+
+
+        return booksPageRenderer.renderList(Arrays.asList(customer.CustomerInventory.toArray()), IDs);
     }
 }
 

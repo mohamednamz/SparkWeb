@@ -1,5 +1,6 @@
 package controller;
 
+import html.BooksPageRenderer;
 import library.Customer;
 import library.CustomerInterface;
 import library.LibraryInterface;
@@ -7,15 +8,18 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
-public class PayOutstandingFinesController implements Route {
+public class YourFinesController implements Route {
 
-    public LibraryInterface libraryInterface;
+    LibraryInterface libraryInterface;
 
-    public CustomerInterface customerInterface;
+    CustomerInterface customerInterface;
 
-    public PayOutstandingFinesController(LibraryInterface libraryInterface, CustomerInterface customerInterface) {
+    BooksPageRenderer booksPageRenderer;
+
+    public YourFinesController(LibraryInterface libraryInterface, CustomerInterface customerInterface, BooksPageRenderer booksPageRenderer) {
         this.libraryInterface = libraryInterface;
         this.customerInterface = customerInterface;
+        this.booksPageRenderer = booksPageRenderer;
     }
 
     @Override
@@ -23,18 +27,12 @@ public class PayOutstandingFinesController implements Route {
 
         String customerName = request.cookie("name");
 
-        String bookId = request.queryParams("id");
-
         Customer customer = customerInterface.getCustomer(customerName);
 
-        int fine = customer.outstandingFines;
-
-        customer = libraryInterface.payOffOutstandingFines(customer,fine);
-
         if (customer.outstandingFines == 0) {
-            return "Outstanding fines have been paid";
+            return "You have no outstanding fines";
         }
 
-        return "You owe a total of £: " + customer.outstandingFines;
+        return booksPageRenderer.renderFine(customer.outstandingFines);
     }
 }

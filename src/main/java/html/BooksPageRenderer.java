@@ -136,6 +136,24 @@ public class BooksPageRenderer {
         return renderedHTML;
     }
 
+    public String renderYourReservations(java.util.List<Book> books) {
+        String CARD_HTML = "<div>";
+
+        for (Book book : books) {
+            CARD_HTML += "<div>" + book.getInfo() + "- " + book.getId();
+            CARD_HTML += "<a href=\"http://localhost/books/cancelReservation?id=" + book.getId() + "\">" + " cancel reservation </a>";
+            CARD_HTML += "</div>";
+        }
+
+        CARD_HTML += "<div>";
+        CARD_HTML += "<a href=\"http://localhost/returnToHomepage\">" + " Homepage </a>";
+        CARD_HTML += "</div>";
+
+        CARD_HTML += "</div>";
+
+        String renderedHTML = HTML.replace("<INSERT>", CARD_HTML);
+        return renderedHTML;
+    }
 
     public String bookRender(Book book) {
         String CARD_HTML = "<ul>";
@@ -154,7 +172,7 @@ public class BooksPageRenderer {
         return renderedHTML;
     }
 
-    public String renderList(java.util.List<Book> books) {
+    public String renderList(java.util.List<Book> books, java.util.List<Integer> ids) {
 
         List convertedlist = new List();
 
@@ -162,21 +180,68 @@ public class BooksPageRenderer {
             convertedlist.add(book);
         }
 
-        return renderList(convertedlist);
+        return renderList(convertedlist, ids);
     }
 
 
-    public String renderList(List books) {
+    public String renderList(List books, java.util.List<Integer> ids) {
         String CARD_HTML = "<ul>";
 
         for (int i = 0; i < books.size(); i++) {
-            CARD_HTML += "<li>" + books.get(i).getInfo() + "</li>";
+            CARD_HTML += "<li>" + books.get(i).getInfo() + books.get(i).getId() + "</li>";
+            CARD_HTML += "<a href=\"http://localhost/books/return?id=" + ids.get(i) + "\"> return </a>";
         }
 
         CARD_HTML += "</ul>";
 
         CARD_HTML += "<div>";
         CARD_HTML += "<a href=\"http://localhost/returnToHomepage\">" + " Homepage </a>";
+        CARD_HTML += "</div>";
+
+        String renderedHTML = HTML.replace("<INSERT>", CARD_HTML);
+        return renderedHTML;
+    }
+
+    public String renderYourListOfReservations(java.util.List<Book> books, java.util.List<Integer> ids) {
+
+        List convertedlist = new List();
+
+        for (Book book : books) {
+            convertedlist.add(book);
+        }
+
+        return renderYourReservations(convertedlist, ids);
+    }
+
+    public String renderYourReservations(List books, java.util.List<Integer> ids) {
+        String CARD_HTML = "<ul>";
+
+        for (int i = 0; i < books.size(); i++) {
+            CARD_HTML += "<li>" + books.get(i).getInfo() + books.get(i).getId() + "</li>";
+            CARD_HTML += "<a href=\"http://localhost/books/cancelReservation?id=" + ids.get(i) + "\"> cancel reservation </a>";
+        }
+
+        CARD_HTML += "</ul>";
+
+        CARD_HTML += "<div>";
+        CARD_HTML += "<a href=\"http://localhost/returnToHomepage\">" + " Homepage </a>";
+        CARD_HTML += "</div>";
+
+        String renderedHTML = HTML.replace("<INSERT>", CARD_HTML);
+        return renderedHTML;
+    }
+
+    public String renderFine(int fine) {
+        String CARD_HTML = "<div>";
+
+        CARD_HTML += "<div>" + "You have an outstanding balance of £" + fine;
+        CARD_HTML += "<a href=\"http://localhost/books/fines\">" + " pay fine </a>";
+        CARD_HTML += "</div>";
+
+        CARD_HTML += "<div>";
+        CARD_HTML += "<a href=\"http://localhost/returnToHomepage\">" + " Homepage </a>";
+        CARD_HTML += "</div>";
+
         CARD_HTML += "</div>";
 
         String renderedHTML = HTML.replace("<INSERT>", CARD_HTML);

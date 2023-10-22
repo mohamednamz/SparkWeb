@@ -3,6 +3,7 @@ package controller;
 import library.Customer;
 import library.CustomerInterface;
 import library.LibraryInterface;
+import library.Reservations;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -23,16 +24,16 @@ public class ReturnBookController implements Route {
 
         String customerName = request.cookie("name");
 
+        String bookId = request.queryParams("id");
+
         Customer customer = customerInterface.getCustomer(customerName);
 
         int date = 1;
 
-        int bookId = Integer.valueOf(request.queryParams("bookId"));
+        int id = Integer.valueOf(bookId);
 
-        libraryInterface.borrowBook(customer,bookId,date);
+        libraryInterface.returnBook(customer,30,id);
 
-        libraryInterface.returnBook(customer,date,bookId);
-
-        return libraryInterface.libraryInventory[bookId - 1].getInfo() + " by " + libraryInterface.libraryInventory[bookId - 1].getAuthor() + " has been returned";
+        return libraryInterface.libraryInventory[id - 1].getInfo() + " by " + libraryInterface.libraryInventory[id - 1].getAuthor() + " has been returned";
     }
 }

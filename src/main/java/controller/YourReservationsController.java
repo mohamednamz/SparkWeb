@@ -6,6 +6,7 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class YourReservationsController implements Route {
@@ -34,6 +35,17 @@ public class YourReservationsController implements Route {
 
         List<Book> customerReservations = libraryInterface.getReservations(customer);
 
-        return booksPageRenderer.renderList(customerReservations);
+        List<Integer> IDs = new ArrayList<>();
+
+        for (int i = 0; i < libraryInterface.getReservations(customer).size(); i++) {
+            IDs.add(libraryInterface.getReservations(customer).get(i).getId());
+        }
+
+        if (IDs.isEmpty()) {
+            return "You have no books reserved";
+        }
+
+        //return booksPageRenderer.renderList(customerReservations, IDs);
+        return booksPageRenderer.renderYourListOfReservations(customerReservations, IDs);
     }
 }

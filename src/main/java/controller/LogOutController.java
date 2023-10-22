@@ -29,6 +29,8 @@ public class LogOutController implements Route {
     @Override
     public Object handle(Request request, Response response) throws Exception {
 
+        response.redirect("/customers");
+
         return customerController.handle(request,response);
     }
 }

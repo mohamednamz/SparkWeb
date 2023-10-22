@@ -17,16 +17,14 @@ public class BookReservationController implements Route {
 
     private BooksPageRenderer booksPageRenderer;
 
-    private Customer customer;
 
     private Reservations reservations;
 
 
-    public BookReservationController(LibraryInterface libraryInterface, CustomerInterface customerInterface, BooksPageRenderer booksPageRenderer, Customer customer, Reservations reservations) {
+    public BookReservationController(LibraryInterface libraryInterface, CustomerInterface customerInterface, BooksPageRenderer booksPageRenderer, Reservations reservations) {
         this.libraryInterface = libraryInterface;
         this.customerInterface = customerInterface;
         this.booksPageRenderer = booksPageRenderer;
-        this.customer = customer;
         this.reservations = reservations;
     }
 
@@ -34,7 +32,7 @@ public class BookReservationController implements Route {
     @Override
     public Object handle(Request request, Response response) throws Exception {
 
-        //Customer customer = customerInterface.getCustomer(request.cookie("name"));
+        Customer customer = customerInterface.getCustomer(request.cookie("name"));
 
         String id = request.queryParams("id");
 
