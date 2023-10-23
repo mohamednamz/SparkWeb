@@ -32,7 +32,7 @@ public class ReturnBookController implements Route {
 
         int id = Integer.valueOf(bookId);
 
-        libraryInterface.returnBook(customer,30,id);
+        libraryInterface.returnBook(customer,30,id, customerInterface);
 
         return libraryInterface.libraryInventory[id - 1].getInfo() + " by " + libraryInterface.libraryInventory[id - 1].getAuthor() + " has been returned";
     }

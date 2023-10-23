@@ -43,7 +43,7 @@ public class CustomerBorrowedBooksController implements Route {
         }
 
         if (IDs.isEmpty()) {
-            return "You have not borrowed any books";
+            return booksPageRenderer.renderMessage("You have not borrowed any books");
         }
 
 

@@ -38,11 +38,11 @@ public class BookReservationController implements Route {
 
         libraryInterface.makeBookReservation(customer, Integer.valueOf(id));
 
-        //List<Reservations> reservations = new ArrayList();
+        //for some reason there are duplicated books.
 
         if (!reservations.reservations.contains(libraryInterface.libraryInventory[Integer.valueOf(id) - 1])) {
 
-            return "This book does not need to be reserved and can be borrowed right away";
+            return booksPageRenderer.renderMessage("This book does not need to be reserved and can be borrowed right away");
         }
 
         //customer.customerReservations.add(libraryInterface.libraryInventory[Integer.valueOf(id) - 1]);

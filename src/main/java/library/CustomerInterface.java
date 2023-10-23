@@ -23,5 +23,23 @@ public class CustomerInterface {
         return null;
     }
 
+    public boolean doesIdMatch(int customerId) {
+        for (Customer customer: customerList) {
+            if(customer.userId == customerId) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Customer getCustomer(int customerId) {
+        for (Customer customer: customerList) {
+            if(customer.userId == customerId) {
+                return customer;
+            }
+        }
+        return null;
+    }
+
 
 }

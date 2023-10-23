@@ -57,7 +57,7 @@ public class GetReservationsController implements Route {
         }
 
         if (canReserve.isEmpty()) {
-            return "There are no books available to reserve";
+            return booksPageRenderer.renderMessage("There are no books available to reserve");
         }
 
         //request.queryParams("id");

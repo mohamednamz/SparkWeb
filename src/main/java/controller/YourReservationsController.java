@@ -42,7 +42,7 @@ public class YourReservationsController implements Route {
         }
 
         if (IDs.isEmpty()) {
-            return "You have no books reserved";
+            return booksPageRenderer.renderMessage("You have no books reserved");
         }
 
         //return booksPageRenderer.renderList(customerReservations, IDs);

@@ -12,6 +12,8 @@ public class Customer {
     public boolean Banned;
     public int userId;
 
+    public boolean borrowLimit;
+
     public List customerReservations = new List();
 
     public void fine(int fine) {

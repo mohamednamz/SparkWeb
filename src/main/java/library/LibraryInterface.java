@@ -9,6 +9,7 @@ public class LibraryInterface {
     BorrowedBook borrowedBook = new BorrowedBook();
 
 
+
     public Book[] libraryInventory = new Book[]{
             new Book("House Without Windows", "Nadia Hashimi", "Fiction", "Hackney", 1, 2),
             new Book("A Thousand Splendid Suns", "Khaled Hosseini", "Fiction", "Bethnal Green", 2, 3),
@@ -69,7 +70,7 @@ public class LibraryInterface {
 
     public Customer borrowBook(Customer customer, int bookIdentificationNumber, int todaysDate) {
 
-        if (customer.CustomerInventory.books.length - 1 < 10) {
+        if (customer.CustomerInventory.index != 9) {
 
             for (int i = 0; i < libraryInventory.length; i++) {
                 if (customer.Banned) {
@@ -107,6 +108,7 @@ public class LibraryInterface {
                 }
             }
         } else {
+            customer.borrowLimit = true;
             System.out.println("You have reached the limit of the amount of book you can borrow at once");
         }
         return customer;
@@ -235,7 +237,7 @@ public class LibraryInterface {
         return reservations;
     }
 
-    public List returnBook(Customer customer, int returnDate, int bookIdentificationNumber) {
+    public List returnBook(Customer customer, int returnDate, int bookIdentificationNumber, CustomerInterface customerInterface) {
 
         for (int i = 0; i < customer.CustomerInventory.books.length; i++) {
             if (bookIdentificationNumber == customer.CustomerInventory.books[i].bookId) {
@@ -245,21 +247,29 @@ public class LibraryInterface {
 
                 } //else {
                 customer.CustomerInventory.remove(i);
+                customer.borrowLimit = false;
 
                 for (int j = 0; j < libraryInventory.length; j++) {
                     if (bookIdentificationNumber == libraryInventory[j].bookId) {
                         libraryInventory[j].inUse = false;
                         libraryInventory[j].quantity++;
+
+                        if (libraryInventory[j].reservedId != 0) {
+                            for (int x = 0; x < customerInterface.customerList.size(); x++) {
+                                if (customerInterface.doesIdMatch(libraryInventory[j].reservedId)) {
+                                    libraryInventory[j].reserved = false;
+                                    borrowBook(customerInterface.getCustomer(libraryInventory[j].reservedId), libraryInventory[j].bookId, 1);
+                                    cancelReservation(customerInterface.getCustomer(libraryInventory[j].reservedId), libraryInventory[j].bookId, 1);
+                                    reservations.reservations.add(libraryInventory[j]);
+                                }
+                            }
+                        }
                     }
                 }
-                //TODO figure this out (although don't think i need this)
-//                    if (libraryInventory[i].bookId == reservations.reservations.books[i].bookId &&
-//                            reservations.reservations.books[i].listOfIds.get(0) != customer.userId) {
-//                        borrowBook(customer, bookIdentificationNumber, returnDate);
-//                    }
+
                 return customer.CustomerInventory;
             }
-            //}
+
         }
         return customer.CustomerInventory;
     }

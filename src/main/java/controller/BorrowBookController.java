@@ -50,7 +50,7 @@ public class BorrowBookController implements Route {
         for (int i = 0; i < customerOrders.size(); i++) {
             if (customerOrders.get(i) != null) {
                 if (customerOrders.get(i).getId() == Integer.valueOf(id)) {
-                    return "You have already borrowed this book";
+                    return booksPageRenderer.renderMessage("You have already borrowed this book");
                 }
             }
         }
@@ -58,12 +58,16 @@ public class BorrowBookController implements Route {
         boolean isInUse = libraryInterface.libraryInventory[Integer.valueOf(id) - 1].getIsUse();
 
         if (isInUse) {
-            return "this book is already being borrowed";
+            return booksPageRenderer.renderMessage("this book is already being borrowed");
         }
 
         List<Integer> IDs = new ArrayList<>();
 
         Customer customerBooks = libraryInterface.borrowBook(customer, Integer.valueOf(id), 1);
+
+        if (customer.borrowLimit) {
+            return booksPageRenderer.renderMessage("You have reached the limit of the amount of book you can borrow at once");
+        }
 
         for (int i = 0; i < customer.CustomerInventory.size(); i++) {
             IDs.add(customer.CustomerInventory.get(i).getId());

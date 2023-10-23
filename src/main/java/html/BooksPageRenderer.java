@@ -248,5 +248,20 @@ public class BooksPageRenderer {
         return renderedHTML;
     }
 
+    public String renderMessage (String message) {
+        String CARD_HTML = "<div>";
+
+        CARD_HTML += "<div>" + message + "</div>";
+
+        CARD_HTML += "<div>";
+        CARD_HTML += "<a href=\"http://localhost/returnToHomepage\">" + " Homepage </a>";
+        CARD_HTML += "</div>";
+
+        CARD_HTML += "</div>";
+
+        String renderedHTML = HTML.replace("<INSERT>", CARD_HTML);
+        return renderedHTML;
+    }
+
 
 }

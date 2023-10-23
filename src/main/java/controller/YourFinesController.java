@@ -30,7 +30,7 @@ public class YourFinesController implements Route {
         Customer customer = customerInterface.getCustomer(customerName);
 
         if (customer.outstandingFines == 0) {
-            return "You have no outstanding fines";
+            return booksPageRenderer.renderMessage("You have no outstanding fines");
         }
 
         return booksPageRenderer.renderFine(customer.outstandingFines);
